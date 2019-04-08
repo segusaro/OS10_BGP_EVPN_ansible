@@ -1,6 +1,7 @@
 ---
 dellos_system:
     hostname: site2-spine1
+    spanning_tree: disable
   
 dellos_bgp:
     asn: 64640

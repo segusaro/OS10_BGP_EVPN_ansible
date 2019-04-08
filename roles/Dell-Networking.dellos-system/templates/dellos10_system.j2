@@ -36,6 +36,9 @@ dellos_system:
 {% if dellos_system.hostname is defined and dellos_system.hostname %}
 hostname {{ dellos_system.hostname }}
 {% endif %}
+{% if dellos_system.spanning_tree is defined and dellos_system.spanning_tree == 'disable' %}
+spanning-tree disable
+{% endif %}
 {% for key,value in dellos_system.iteritems() %}
   {% if key == "hardware_forwarding" %}
     {% if value %}
