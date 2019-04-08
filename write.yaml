@@ -1,0 +1,11 @@
+---
+- hosts: spine
+  connection: network_cli
+  gather_facts : no
+
+  tasks:
+    - name: "Saving configuration"
+      dellos10_command:
+        commands:
+          - write
+
