@@ -24,8 +24,11 @@ dellos_bgp:
           state: present
         - name: overlay
           type: peergroup
+          fall_over: present
           ebgp_multihop: 4
           src_loopback: 0
+          adv_interval: 1
+          timer: 3 9
           send_community:
             - type: extended
           address_family: 
@@ -42,6 +45,7 @@ dellos_bgp:
           remote_asn: 64540 
           peergroup: underlay
           peergroup_state: present
+          fall_over: present
           admin: up
           state: present
         - ip: 10.9.0.2
@@ -50,6 +54,7 @@ dellos_bgp:
           remote_asn: 64540
           peergroup: underlay
           peergroup_state: present
+          fall_over: present
           admin: up
           state: present
         - ip: 10.9.0.8
@@ -58,6 +63,7 @@ dellos_bgp:
           remote_asn: 64541
           peergroup: underlay
           peergroup_state: present
+          fall_over: present
           admin: up
           state: present
         - ip: 10.9.0.10
@@ -66,6 +72,7 @@ dellos_bgp:
           remote_asn: 64541
           peergroup: underlay
           peergroup_state: present
+          fall_over: present
           admin: up
           state: present
         - ip: 10.12.0.1
@@ -74,6 +81,7 @@ dellos_bgp:
           remote_asn: 64641
           peergroup: underlay
           peergroup_state: present
+          fall_over: present
           admin: up
           state: present
         - ip: 172.20.11.1
@@ -82,6 +90,8 @@ dellos_bgp:
           remote_asn: 64540
           peergroup: overlay
           peergroup_state: present
+          fall_over: present
+          ebgp_multihop: 4
           admin: up
           state: present
         - ip: 172.20.11.2
@@ -90,6 +100,8 @@ dellos_bgp:
           remote_asn: 64541
           peergroup: overlay
           peergroup_state: present
+          fall_over: present
+          ebgp_multihop: 4
           admin: up
           state: present
         

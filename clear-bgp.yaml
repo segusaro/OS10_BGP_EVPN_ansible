@@ -1,0 +1,11 @@
+---
+- hosts: spine
+  connection: network_cli
+  gather_facts : no
+
+  tasks:
+    - name: "Clear BGP sessions"
+      dellos10_command:
+        commands:
+          - clear ip bgp *
+
