@@ -1,0 +1,100 @@
+#jinja2: trim_blocks: True,lstrip_blocks: True
+{################################
+
+Purpose:
+Configure VXLAN commands for dellos10 Devices.
+
+dellos_vxlan:
+  nve_source_loopback: 1
+  anycast_gateway_mac: 11:22:33:44:55:66
+  auto_evi: false
+  virtual_network:
+    - vni: 888
+      description: "NSX_Cluster_VNI"
+      vlan: 888
+      evi: 888
+      rd: auto
+      rt: auto
+      anycast_gateway_ip: 172.17.17.1
+      state: present
+
+################################}
+{% if dellos_vxlan is defined and dellos_vxlan %}
+  {% set vxlan_vars = dellos_vxlan %}
+  {% if vxlan_vars.nve_source_loopback is defined and vxlan_vars.nve_source_loopback %}
+nve
+ source-interface loopback{{ vxlan_vars.nve_source_loopback }}
+  {% else %}
+nve
+ no source-interface
+  {% endif %}
+  {% if vxlan_vars.anycast_gateway_mac is defined and vxlan_vars.anycast_gateway_mac %}
+ip virtual-router mac-address {{ vxlan_vars.anycast_gateway_mac }}
+  {% else %}
+no ip virtual-router mac-address
+  {% endif %}
+  {% if vxlan_vars.auto_evi is defined and vxlan_vars.auto_evi %}
+no evpn
+evpn
+ auto-evi
+  {% else %}
+evpn
+ no auto-evi  
+  {% endif %}
+  {% if vxlan_vars.virtual_network is defined and vxlan_vars.virtual_network %}
+    {% for virtual_network in vxlan_vars.virtual_network %}
+      {% if virtual_network.evi is defined and virtual_network.evi and not vxlan_vars.auto_evi %}
+        {% if virtual_network.state is defined and virtual_network.state == "absent"  %}
+ no evi {{ virtual_network.evi }}
+        {% else %}
+          {% if virtual_network.evi %}
+ evi {{ virtual_network.evi }}
+            {% if virtual_network.rd is defined and virtual_network.rd %}
+  rd {{ virtual_network.rd }}
+            {% endif %}
+            {% if virtual_network.rt is defined and virtual_network.rt %}
+  route-target {{ virtual_network.rt }} both
+            {% endif %}
+            {% if virtual_network.vni is defined and virtual_network.vni %}
+  vni {{ virtual_network.vni }}
+            {% endif %}
+          {% endif %}
+        {% endif %}
+      {% endif %}
+    {% endfor %}
+    {% for virtual_network in vxlan_vars.virtual_network %}
+      {% if virtual_network.vni is defined and virtual_network.state == "absent"  %}
+        {% if virtual_network.vlan is defined and virtual_network.vlan %}
+interface vlan{{ virtual_network.vlan }}
+ no virtual-network
+ exit
+        {% endif %}
+no interface virtual-network{{ virtual_network.vni }}
+no virtual-network {{ virtual_network.vni }}
+      {% else %}
+virtual-network {{ virtual_network.vni }}
+ vxlan-vni {{ virtual_network.vni }}
+        {% if virtual_network.description is defined %}
+ description {{ virtual_network.description }}
+        {% endif %}
+      {% endif %}
+    {% endfor %}
+    {% for virtual_network in vxlan_vars.virtual_network %}
+      {% if virtual_network.vni is defined and virtual_network.vlan is defined and virtual_network.state != "absent" %}
+        {% if virtual_network.vlan %}
+interface vlan{{ virtual_network.vlan }}
+ virtual-network {{ virtual_network.vni }}
+        {% endif %}
+      {% endif %}
+    {% endfor %}
+    {% for virtual_network in vxlan_vars.virtual_network %}
+      {% if virtual_network.ip is defined and virtual_network.vni is defined and virtual_network.anycast_gateway_ip is defined and virtual_network.state != "absent" %}
+        {% if virtual_network.vni and virtual_network.ip and virtual_network.anycast_gateway_ip %}
+interface virtual-network{{ virtual_network.vni }}
+ ip address {{ virtual_network.ip }}
+ ip virtual-router address {{ virtual_network.anycast_gateway_ip }}
+        {% endif %}
+      {% endif %}
+    {% endfor %}
+  {% endif %}
+{% endif %}

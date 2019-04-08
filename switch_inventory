@@ -1,0 +1,11 @@
+site1-spine1 ansible_host=192.168.211.174 ansible_network_os="dellos10"
+site1-spine2 ansible_host=192.168.211.175 ansible_network_os="dellos10"
+site2-spine1 ansible_host=192.168.211.176 ansible_network_os="dellos10"
+site2-spine2 ansible_host=192.168.211.177 ansible_network_os="dellos10"
+
+
+[spine]
+site1-spine1
+site1-spine2
+site2-spine1
+site2-spine2

@@ -1,0 +1,17 @@
+---
+- hosts: spine
+  connection: network_cli
+  gather_facts : no
+
+  roles:
+    - Dell-Networking.dellos-system
+    - Dell-Networking.dellos-interface
+    - Dell-Networking.dellos-lag
+    - Dell-Networking.dellos-bgp
+    - Dell-Networking.dellos-route-map
+    - Dell-Networking.dellos-prefix-list
+    - Dell-Networking.dellos-vlt
+    - Dell-Networking.dellos-vlan
+    - Dell-Networking.dellos-vxlan
+
+
