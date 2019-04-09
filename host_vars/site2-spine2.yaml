@@ -2,6 +2,12 @@
 dellos_system:
     hostname: site2-spine2
     spanning_tree: disable
+    uplink_state_group:
+        - id: 1
+          enable: true
+          upstream: port-channel1
+          downstream: ethernet1/1/2-1/1/5
+          state: present
   
 dellos_bgp:
     asn: 64641

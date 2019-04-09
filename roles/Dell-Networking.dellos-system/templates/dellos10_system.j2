@@ -6,6 +6,13 @@ Configure system commands for dellos10 Devices
 
 dellos_system:
     hostname: os10
+    spanning_tree: disable
+    uplink_state_group:
+        - id: 1
+          enable: true
+          upstream: port-channel1
+          downstream: ethernet1/1/2-1/1/5
+          state: present
     hardware_forwarding: scaled-l3-routes
     hash_algo:
       algo:
@@ -35,6 +42,30 @@ dellos_system:
 {% if dellos_system is defined and dellos_system %}
 {% if dellos_system.hostname is defined and dellos_system.hostname %}
 hostname {{ dellos_system.hostname }}
+{% endif %}
+{% if dellos_system.uplink_state_group is defined %}
+  {% for ufd in dellos_system.uplink_state_group %}
+    {% if ufd.id is defined and ufd.id %}
+      {% if ufd.state == 'absent' %}
+no uplink-state-group {{ ufd.id }}
+      {% else %}
+uplink-state-group {{ ufd.id }}
+        {% if ufd.upstream is defined and ufd.upstream %}
+ upstream {{ ufd.upstream }}
+        {% endif %}
+        {% if ufd.downstream is defined and ufd.downstream %}
+ downstream {{ ufd.downstream }}
+        {% endif %}
+        {% if ufd.enable is defined %}
+          {% if ufd.enable %}
+ enable
+          {% else %}
+ no enable
+          {% endif %}
+        {% endif %}
+      {% endif %}  
+    {% endif %}
+  {% endfor %}
 {% endif %}
 {% if dellos_system.spanning_tree is defined and dellos_system.spanning_tree == 'disable' %}
 spanning-tree disable
