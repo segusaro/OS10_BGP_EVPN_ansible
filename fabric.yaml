@@ -4,9 +4,9 @@
   gather_facts : no
 
   roles:
-    - Dell-Networking.dellos-system
     - Dell-Networking.dellos-interface
     - Dell-Networking.dellos-lag
+    - Dell-Networking.dellos-system
     - Dell-Networking.dellos-bgp
     - Dell-Networking.dellos-route-map
     - Dell-Networking.dellos-prefix-list

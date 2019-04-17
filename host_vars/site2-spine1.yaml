@@ -19,17 +19,56 @@ dellos_bgp:
         min_rx: 100
         multiplier: 3
     maxpath_ebgp: 4
-    maxpath_ibgp: 4
     neighbor:
-        - name: underlay
-          type: peergroup
+        - ip: 10.9.0.0
+          description: U_site1-spine1
+          type: ipv4
+          remote_asn: 64540 
           fall_over: present
           adv_interval: 1
           timer: 3 9
-          connection_retry_timer: 10          
+          admin: up
           state: present
-        - name: overlay
-          type: peergroup
+        - ip: 10.9.0.2
+          description: U_site1-spine1
+          type: ipv4
+          remote_asn: 64540
+          fall_over: present
+          adv_interval: 1
+          timer: 3 9
+          admin: up
+          state: present
+        - ip: 10.9.0.8
+          description: U_site1-spine2
+          type: ipv4
+          remote_asn: 64541
+          fall_over: present
+          adv_interval: 1
+          timer: 3 9
+          admin: up
+          state: present
+        - ip: 10.9.0.10
+          description: U_site1-spine2
+          type: ipv4
+          remote_asn: 64541
+          fall_over: present
+          adv_interval: 1
+          timer: 3 9
+          admin: up
+          state: present
+        - ip: 10.12.0.1
+          description: U_site2-spine2
+          type: ipv4
+          remote_asn: 64641
+          fall_over: present
+          adv_interval: 1
+          timer: 3 9
+          admin: up
+          state: present
+        - ip: 172.20.11.1
+          description: O_site1-spine1
+          type: ipv4
+          remote_asn: 64540
           fall_over: present
           ebgp_multihop: 4
           src_loopback: 0
@@ -44,70 +83,26 @@ dellos_bgp:
             - type: l2vpn
               activate: true
               state: present
-          state: present
-        - ip: 10.9.0.0
-          description: U_site1-spine1
-          type: ipv4
-          remote_asn: 64540 
-          peergroup: underlay
-          peergroup_state: present
-          fall_over: present
-          admin: up
-          state: present
-        - ip: 10.9.0.2
-          description: U_site1-spine1
-          type: ipv4
-          remote_asn: 64540
-          peergroup: underlay
-          peergroup_state: present
-          fall_over: present
-          admin: up
-          state: present
-        - ip: 10.9.0.8
-          description: U_site1-spine2
-          type: ipv4
-          remote_asn: 64541
-          peergroup: underlay
-          peergroup_state: present
-          fall_over: present
-          admin: up
-          state: present
-        - ip: 10.9.0.10
-          description: U_site1-spine2
-          type: ipv4
-          remote_asn: 64541
-          peergroup: underlay
-          peergroup_state: present
-          fall_over: present
-          admin: up
-          state: present
-        - ip: 10.12.0.1
-          description: U_site2-spine2
-          type: ipv4
-          remote_asn: 64641
-          peergroup: underlay
-          peergroup_state: present
-          fall_over: present
-          admin: up
-          state: present
-        - ip: 172.20.11.1
-          description: O_site1-spine1
-          type: ipv4
-          remote_asn: 64540
-          peergroup: overlay
-          peergroup_state: present
-          fall_over: present
-          ebgp_multihop: 4
           admin: up
           state: present
         - ip: 172.20.11.2
           description: O_site1-spine2
           type: ipv4
           remote_asn: 64541
-          peergroup: overlay
-          peergroup_state: present
           fall_over: present
           ebgp_multihop: 4
+          src_loopback: 0
+          adv_interval: 1
+          timer: 3 9
+          send_community:
+            - type: extended
+          address_family: 
+            - type: ipv4
+              activate: false
+              state: present
+            - type: l2vpn
+              activate: true
+              state: present
           admin: up
           state: present
         
