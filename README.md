@@ -11,4 +11,4 @@ This example shows configuration for 2 sites with BGP EVPN VXLAN for Layer 2 ext
 * dell-vxlan Ansible Role is written from a scratch and implements only nesessary. It was tested for limited configuration scenario. This role is provided "AS IS".
 
 Network Topology
-![Network Topology](segusaro.github.com/OS10_BGP_EVPN_ansible/Topology.png)
+![Network Topology](/OS10_BGP_EVPN_ansible/Topology.png)
